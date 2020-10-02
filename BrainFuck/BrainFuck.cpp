@@ -29,8 +29,7 @@ int main()
 }
 
 void BrainFuck() {
-    char vettore[10000];
-    memset(vettore, 0, sizeof(vettore));
+    int vettore[10000] = {0};
     int pos = 0;
     map<char, int> lookUpTable;
     lookUpTable['<'] = LEFT;
@@ -46,7 +45,6 @@ void BrainFuck() {
     cin >> commands;
     for (int i = 0; i < commands.size(); i++) {
         int command = commands[i];
-        //cout << command;
         switch (lookUpTable[command])
         {
         case LEFT:
@@ -62,16 +60,16 @@ void BrainFuck() {
             vettore[pos]--;
             break;
         case OUT:
-            cout << (char)vettore[pos];
+            cout << (char)vettore[pos] << endl;
             break;
         case IN:
             cin >> vettore[pos];
             break;
         case START:
             if (vettore[pos] == 0) {
-                int bNum = 1;
-                for (int j = pos; j < commands.size(); j++) {
-                    switch (commands[j])
+                int bNum = 0;
+                for (int j = i; j < commands.size(); j++) {
+                    switch (lookUpTable[commands[j]])
                     {
                     case START:
                         bNum++;
@@ -81,20 +79,17 @@ void BrainFuck() {
                         break;
                     }
                     if (bNum == 0) {
-                        pos = j + 1;
+                        i = j;
                         break;
                     }
                 }
-            }
-            else {
-                pos++;
             }
             break;
         case END:
-            if (vettore[pos] == 0) {
-                int bNum = 1;
-                for (int j = pos; j >= 0; j--) {
-                    switch (commands[j])
+            if (vettore[pos] != 0) {
+                int bNum = 0;
+                for (int j = i; j >= 0; j--) {
+                    switch (lookUpTable[commands[j]])
                     {
                     case START:
                         bNum++;
@@ -104,16 +99,17 @@ void BrainFuck() {
                         break;
                     }
                     if (bNum == 0) {
-                        pos = j + 1;
+                        i = j;
                         break;
                     }
                 }
             }
-            else {
-                pos++;
-            }
             break;
         }
+
+        //string stop;
+        //cin >> stop;
+        //cout << (char)command << " " << pos << ":" << vettore[pos] << endl;
     }
 }
 
